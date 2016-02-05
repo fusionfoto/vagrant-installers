@@ -73,7 +73,6 @@ pkgbuild \
     --install-location "/opt/vagrant" \
     --scripts ${STAGING_DIR}/scripts \
     --timestamp=none \
-    --sign "Developer ID Installer: Mitchell Hashimoto" \
     ${STAGING_DIR}/core.pkg
 
 # Create the distribution definition, an XML file that describes what
@@ -118,7 +117,6 @@ productbuild \
     --resources ${STAGING_DIR}/resources \
     --package-path ${STAGING_DIR} \
     --timestamp=none \
-    --sign "Developer ID Installer: Mitchell Hashimoto" \
     ${STAGING_DIR}/Vagrant.pkg
 
 #-------------------------------------------------------------------------
@@ -172,7 +170,9 @@ echo '
 
 # Set the permissions and generate the final DMG
 echo "Creating final DMG..."
-chmod -Rf go-w /Volumes/Vagrant
+# NOTE: this awkward find/xargs thing is to work around missing read
+# permissions on /Volumes/Vagrant/.Trashes, at least on my Macbook.
+find /Volumes/Vagrant -name .Trashes -prune -o -print0 | xargs -0 chmod -f go-w
 sync
 hdiutil detach ${DEVICE}
 hdiutil convert \

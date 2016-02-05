@@ -25,13 +25,16 @@ mv ${SUBSTRATE_DIR}/bin ./opt/vagrant
 mv ${SUBSTRATE_DIR}/embedded ./opt/vagrant
 
 # Create the Linux script proxy
-cat <<EOF >./usr/bin/vagrant
+# I don't know why, but trying to cat a heredoc didn't work in the Precise VM
+FILE_BITS="
 #!/usr/bin/env bash
 #
 # This script just forwards all arguments to the real vagrant binary.
 
-/opt/vagrant/bin/vagrant "\$@"
-EOF
+/opt/vagrant/bin/vagrant \"\$@\"
+"
+echo "$FILE_BITS" > ./usr/bin/vagrant
+
 chmod +x ./usr/bin/vagrant
 
 # Package it up!
