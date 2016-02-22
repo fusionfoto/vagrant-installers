@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
 
 # Verify arguments
@@ -26,8 +26,7 @@ mv ${SUBSTRATE_DIR}/embedded ./opt/vagrant
 
 # Create the Linux script proxy
 # I don't know why, but trying to cat a heredoc didn't work in the Precise VM
-FILE_BITS="
-#!/usr/bin/env bash
+FILE_BITS="#!/usr/bin/env bash
 #
 # This script just forwards all arguments to the real vagrant binary.
 
