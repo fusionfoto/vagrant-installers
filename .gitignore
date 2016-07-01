@@ -12,3 +12,5 @@ substrate/launcher/launcher.exe
 substrate/terraform/*.tfstate
 substrate/terraform/*.tfvars
 substrate/terraform/output
+/package/tmp.*
+/substrate_ubuntu_x86_64.zip
