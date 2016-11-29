@@ -65,10 +65,16 @@ export CFLAGS="${CPPFLAGS}"
 export LDFLAGS="-L${EMBEDDED_DIR}/lib"
 export PATH="${EMBEDDED_DIR}/bin:${PATH}"
 export SSL_CERT_FILE="${EMBEDDED_DIR}/cacert.pem"
-${GEM_COMMAND} install vagrant.gem --no-ri --no-rdoc
+
+# Darwin
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    export CONFIGURE_ARGS="-Wl,-rpath,${EMBEDDED_DIR}/lib"
+fi
+
+${GEM_COMMAND} install vagrant.gem --no-document
 
 # Install extensions
-${GEM_COMMAND} install vagrant-share --no-ri --no-rdoc --source "http://gems.hashicorp.com"
+${GEM_COMMAND} install vagrant-share --no-document --conservative --clear-sources --source "https://gems.hashicorp.com"
 
 # Setup the system plugins
 # I don't know why, but trying to cat a heredoc didn't work in the Precise VM

@@ -71,7 +71,7 @@ func main() {
 		log.Printf("launcher: gemPaths (initial) = %#v", gemPaths)
 	}
 	for i := 0; i < len(gemPaths); i++ {
-		fullPath := filepath.Join(gemPaths[i], "lib", "vagrant", "pre-rubygems.rb")
+		fullPath := filepath.Join(gemPaths[i], "lib", "vagrant", "version.rb")
 		if _, err := os.Stat(fullPath); err != nil {
 			if debug {
 				log.Printf("launcher: bad gemPath += %s", fullPath)
@@ -145,6 +145,14 @@ func main() {
 	// Unset any RUBYLIB, we don't want this bleeding into our runtime
 	newEnv["RUBYLIB"] = ""
 
+	if runtime.GOOS == "darwin" {
+		configure_args := "-Wl,rpath," + filepath.Join(embeddedDir, "lib")
+		if original_configure_args := os.Getenv("CONFIGURE_ARGS"); original_configure_args != "" {
+			configure_args = original_configure_args + " " + configure_args
+		}
+		newEnv["CONFIGURE_ARGS"] = configure_args
+	}
+
 	// Store the "current" environment so Vagrant can restore it when shelling
 	// out.
 	for _, value := range os.Environ() {
@@ -185,7 +193,7 @@ func main() {
 	cmd := exec.Command(rubyPath)
 	cmd.Args = make([]string, len(os.Args)+1)
 	cmd.Args[0] = "ruby"
-	cmd.Args[1] = filepath.Join(gemPath, "lib", "vagrant", "pre-rubygems.rb")
+	cmd.Args[1] = vagrantExecutable
 	copy(cmd.Args[2:], os.Args[1:])
 	if debug {
 		log.Printf("launcher: rubyPath = %s", rubyPath)
