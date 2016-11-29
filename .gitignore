@@ -16,3 +16,4 @@ substrate/terraform/output
 /package/*.dmg
 /package/*.deb
 /substrate_ubuntu_x86_64.zip
+/package/package-staging
