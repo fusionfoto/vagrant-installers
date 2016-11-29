@@ -2,11 +2,11 @@
 # vi: set ft=ruby :
 
 $script = <<CODE
-wget -O- https://raw.github.com/hashicorp/puppet-bootstrap/master/ubuntu.sh | sh
+wget -O- https://raw.github.com/hashicorp/puppet-bootstrap/master/ubuntu.sh | sudo bash
 CODE
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.provision "shell", inline: $script
 
