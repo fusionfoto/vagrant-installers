@@ -13,4 +13,6 @@ substrate/terraform/*.tfstate
 substrate/terraform/*.tfvars
 substrate/terraform/output
 /package/tmp.*
+/package/*.dmg
+/package/*.deb
 /substrate_ubuntu_x86_64.zip
